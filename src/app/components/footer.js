@@ -8,8 +8,9 @@ export default function Footer() {
         pt: 6,
         pb: 6,
         borderTop: "1px solid #ddd",
-        background: "linear-gradient(to right, rgb(203, 59, 88), rgb(19, 205, 187))",
-        color: "white",
+        background:
+          "linear-gradient(135deg, #15b79e 0%, #b5c0d2 40%, #122647 100%)",
+        color: "#192c4b",
       }}
     >
       <Container maxWidth="md">
@@ -24,7 +25,12 @@ export default function Footer() {
           {/* Logo and Description */}
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box display="flex" alignItems="center" mb={1}>
-              <Image src="/logo.svg" alt="ShopSmart Logo" width={40} height={40} />
+              <Image
+                src="/logo.svg"
+                alt="ShopSmart Logo"
+                width={40}
+                height={40}
+              />
               <Typography variant="h6" sx={{ ml: 1 }}>
                 ShopSmart
               </Typography>
@@ -58,7 +64,9 @@ export default function Footer() {
             <Typography variant="h6" gutterBottom>
               Contact Us
             </Typography>
-            <Typography variant="body2">Email: support@shopsmart.com</Typography>
+            <Typography variant="body2">
+              Email: support@shopsmart.com
+            </Typography>
             <Typography variant="body2">Phone: +91 98765 43210</Typography>
           </Box>
         </Box>

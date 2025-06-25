@@ -31,8 +31,8 @@ export default function Navbar() {
       elevation={1}
       sx={{
         background:
-          "linear-gradient(to right, rgb(203, 59, 88), rgb(19, 205, 187))",
-        color: "black",
+          "linear-gradient(135deg, #15b79e 0%, #b5c0d2 40%, #122647 100%)",
+        color: "#d2f5ee",
         py: 1,
       }}
     >
@@ -45,7 +45,7 @@ export default function Navbar() {
               display: "flex",
               alignItems: "center",
               gap: 1,
-              textDecoration: "none", // removes underline
+              textDecoration: "none",
             }}
           >
             <Image
@@ -56,7 +56,7 @@ export default function Navbar() {
             />
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", color: "black", ml: 1 }}
+              sx={{ fontWeight: "bold", color: "#192c4b", ml: 1 }}
             >
               ShopSmart
             </Typography>
@@ -64,22 +64,29 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            <Button component={Link} href="/" sx={{ color: "black" }}>
+            <Button component={Link} href="/" sx={{ color: "#b5c0d2" }}>
               Home
             </Button>
-            <Button component={Link} href="/products" sx={{ color: "black" }}>
+            <Button component={Link} href="/products" sx={{ color: "#b5c0d2" }}>
               Products
             </Button>
-            <Button component={Link} href="/categories" sx={{ color: "black" }}>
+            <Button
+              component={Link}
+              href="/categories"
+              sx={{ color: "#b5c0d2" }}
+            >
               Categories
             </Button>
-            <Button component={Link} href="/login" sx={{ color: "black" }}>
+            <Button component={Link} href="/admin" sx={{ color: "#b5c0d2" }}>
+              Admin
+            </Button>
+            <Button component={Link} href="/login" sx={{ color: "#b5c0d2" }}>
               Login
             </Button>
             {/* <Button component={Link} href="/signUp" sx={{ color: "black" }}>
               Signup
             </Button> */}
-            <IconButton component={Link} href="/cart" sx={{ color: "black" }}>
+            <IconButton component={Link} href="/cart" sx={{ color: "#b5c0d2" }}>
               <Badge badgeContent={cartCount} color="error">
                 <ShoppingCartIcon />
               </Badge>

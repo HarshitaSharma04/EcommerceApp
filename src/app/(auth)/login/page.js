@@ -5,30 +5,31 @@ import {
   Button,
   Typography,
   Stack,
-  Alert,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  FormHelperText
+  TextField,
+  FormHelperText,
 } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 
 export default function LoginPage() {
-  const { control, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      email: "harshitash09@gmail.com",
-      password: "pass@@2"
-    }
+      email: "",
+      password: "",
+    },
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data) => {
     console.log("Login Data:", data);
-    // Add actual login logic here
+    // Add your login logic here
   };
 
   return (
@@ -37,76 +38,87 @@ export default function LoginPage() {
         <Typography variant="h4">Sign in</Typography>
         <Typography color="text.secondary" variant="body2">
           Don&apos;t have an account?{" "}
-          <Link href="/signUp" style={{ textDecoration: "underline" }}>
+          <Link href="/signUp" style={{ color: "#192c4b" }}>
             Sign up
           </Link>
         </Typography>
       </Stack>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack spacing={2}>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field }) => (
-              <FormControl fullWidth>
-                <InputLabel>Email address</InputLabel>
-                <OutlinedInput {...field} label="Email address" type="email" />
-              </FormControl>
-            )}
-          />
-          <Controller
-            control={control}
-            name="password"
-            render={({ field }) => (
-              <FormControl fullWidth>
-                <InputLabel>Password</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    showPassword ? (
-                      <EyeIcon
-                        cursor="pointer"
-                        fontSize={20}
-                        onClick={() => setShowPassword(false)}
-                      />
-                    ) : (
-                      <EyeSlashIcon
-                        cursor="pointer"
-                        fontSize={20}
-                        onClick={() => setShowPassword(true)}
-                      />
-                    )
-                  }
-                />
-              </FormControl>
-            )}
+          {/* Email Field */}
+          <TextField
+            fullWidth
+            label="Email address"
+            type="email"
+            error={!!errors.email}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^\S+@\S+\.\S+$/,
+                message: "Enter a valid email address",
+              },
+            })}
+            helperText={errors.email?.message}
           />
 
-          <div>
-            <Link href="/forgetPass" style={{ textDecoration: "underline" }}>
+          {/* Password Field */}
+          <TextField
+            fullWidth
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            error={!!errors.password}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}$/,
+                message:
+                  "Must include upper, lower, number & special character",
+              },
+            })}
+            helperText={errors.password?.message}
+            InputProps={{
+              endAdornment: showPassword ? (
+                <EyeIcon
+                  fontSize={20}
+                  cursor="pointer"
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <EyeSlashIcon
+                  fontSize={20}
+                  cursor="pointer"
+                  onClick={() => setShowPassword(true)}
+                />
+              ),
+            }}
+          />
+
+          {/* Forgot Password */}
+          <Box textAlign="right">
+            <Link href="/forgetPass" style={{ color: "#192c4b" }}>
               Forgot password?
             </Link>
-          </div>
+          </Box>
 
-          <Button type="submit" variant="contained">
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              background:
+                "linear-gradient(135deg, #122647 10%, #15b79e 40%, #122647 90%)",
+              color: "white",
+            }}
+          >
             Sign in
           </Button>
         </Stack>
       </form>
-
-      {/* <Alert color="warning">
-        Use{" "}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          sofia@devias.io
-        </Typography>{" "}
-        with password{" "}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          Secret1
-        </Typography>
-      </Alert> */}
     </Stack>
   );
 }
