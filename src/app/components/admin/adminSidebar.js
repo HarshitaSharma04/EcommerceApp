@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import {
   Box,
   Divider,
@@ -9,21 +9,25 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// Icons
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import GroupIcon from "@mui/icons-material/Group";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
+import CategoryIcon from "@mui/icons-material/Category";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import { CompareArrowsOutlined } from "@mui/icons-material";
 
 const drawerWidth = 260;
 
+// Navigation items with children for Products
 const navItems = [
   {
     text: "Overview",
@@ -34,6 +38,18 @@ const navItems = [
     text: "Products",
     href: "/admin/products",
     icon: <Inventory2Icon fontSize="small" />,
+    children: [
+      {
+        text: "Categories",
+        href: "/admin/products/categories",
+        icon: <CategoryIcon fontSize="small" />,
+      },
+      {
+        text: "Collection",
+        href: "/admin/products/collection",
+        icon: <CollectionsIcon fontSize="small" />,
+      },
+    ],
   },
   {
     text: "Customers",
@@ -55,6 +71,11 @@ const navItems = [
     href: "/admin/settings",
     icon: <SettingsIcon fontSize="small" />,
   },
+  {
+    text: "Transaction",
+    href: "/admin/transactions",
+    icon: <CompareArrowsOutlined fontSize="small" />,
+  },
 ];
 
 export default function AdminSidebar({ children }) {
@@ -62,6 +83,7 @@ export default function AdminSidebar({ children }) {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* Sidebar Drawer */}
       <Drawer
         variant="permanent"
         sx={{
@@ -76,14 +98,13 @@ export default function AdminSidebar({ children }) {
           },
         }}
       >
-        {/* Logo Section */}
+        {/* Logo */}
         <Box
           component={Link}
           href="/"
           sx={{
             p: 3,
             display: "flex",
-            flexDirection: "row",
             alignItems: "center",
             gap: 1.5,
             textDecoration: "none",
@@ -105,55 +126,108 @@ export default function AdminSidebar({ children }) {
 
         {/* Navigation Items */}
         <List>
-          {navItems.map(({ text, href, icon }) => {
+          {navItems.map(({ text, href, icon, children }) => {
             const isActive = pathname === href;
+            const isChildActive = children?.some((child) => pathname === child.href);
 
             return (
-              <ListItem key={text} disablePadding>
-                <Link
-                  href={href}
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                    width: "100%",
-                  }}
-                >
-                  <ListItemButton
-                    sx={{
-                      px: 3,
-                      py: 1.2,
-                      color: isActive ? "#fff" : "#cbd5e1",
-                      backgroundColor: isActive ? "#1e293b" : "transparent",
-                      "&:hover": {
-                        backgroundColor: "#1e293b",
-                        color: "#fff",
-                      },
+              <React.Fragment key={text}>
+                {/* Parent Item */}
+                <ListItem disablePadding>
+                  <Link
+                    href={href}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                      width: "100%",
                     }}
                   >
-                    <ListItemIcon
+                    <ListItemButton
                       sx={{
-                        color: isActive ? "#38bdf8" : "#94a3b8",
-                        minWidth: "36px",
+                        px: 3,
+                        py: 1.2,
+                        color: isActive || isChildActive ? "#fff" : "#cbd5e1",
+                        backgroundColor:
+                          isActive || isChildActive ? "#1e293b" : "transparent",
+                        "&:hover": {
+                          backgroundColor: "#1e293b",
+                          color: "#fff",
+                        },
                       }}
                     >
-                      {icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text}
-                      primaryTypographyProps={{
-                        fontSize: 15,
-                        fontWeight: isActive ? "bold" : "normal",
-                      }}
-                    />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
+                      <ListItemIcon
+                        sx={{
+                          color: isActive || isChildActive ? "#38bdf8" : "#94a3b8",
+                          minWidth: "36px",
+                        }}
+                      >
+                        {icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={text}
+                        primaryTypographyProps={{
+                          fontSize: 15,
+                          fontWeight: isActive || isChildActive ? "bold" : "normal",
+                        }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+
+                {/* Child Items */}
+                {children?.map((child) => {
+                  const isChildSelected = pathname === child.href;
+                  return (
+                    <ListItem key={child.text} disablePadding sx={{ pl: 4 }}>
+                      <Link
+                        href={child.href}
+                        style={{
+                          textDecoration: "none",
+                          color: "inherit",
+                          width: "100%",
+                        }}
+                      >
+                        <ListItemButton
+                          sx={{
+                            px: 3,
+                            py: 1,
+                            color: isChildSelected ? "#fff" : "#cbd5e1",
+                            backgroundColor: isChildSelected
+                              ? "#1e293b"
+                              : "transparent",
+                            "&:hover": {
+                              backgroundColor: "#1e293b",
+                              color: "#fff",
+                            },
+                          }}
+                        >
+                          <ListItemIcon
+                            sx={{
+                              color: isChildSelected ? "#38bdf8" : "#94a3b8",
+                              minWidth: "36px",
+                            }}
+                          >
+                            {child.icon}
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={child.text}
+                            primaryTypographyProps={{
+                              fontSize: 14,
+                              fontWeight: isChildSelected ? "bold" : "normal",
+                            }}
+                          />
+                        </ListItemButton>
+                      </Link>
+                    </ListItem>
+                  );
+                })}
+              </React.Fragment>
             );
           })}
         </List>
       </Drawer>
 
-      {/* Main Content Area */}
+      {/* Content Area */}
       <Box
         component="main"
         sx={{
@@ -164,7 +238,6 @@ export default function AdminSidebar({ children }) {
           minHeight: "100vh",
         }}
       >
-        {/* <Toolbar /> */}
         {children}
       </Box>
     </Box>

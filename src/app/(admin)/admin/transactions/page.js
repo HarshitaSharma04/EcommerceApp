@@ -1,9 +1,9 @@
 import React from 'react'
 
-function transactons() {
+function Transaction() {
   return (
-    <div>transacton page</div>
+    <div>transaction page</div>
   )
 }
 
-export default transactons
+export default Transaction
