@@ -18,6 +18,7 @@ import {
   Typography,
   TablePagination,
   IconButton,
+  Pagination,
 } from "@mui/material";
 
 import {
@@ -29,18 +30,27 @@ import {
 } from "@mui/icons-material";
 
 import dayjs from "dayjs";
-import { dummyProducts } from "@/app/data/products-data";
+import { dummyProducts } from "@/data/products-data";
 import { DeviceTabletCameraIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 function Products() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const router = useRouter();
 
   const handleClick = () => {
     router.push("/admin/products/product-details/${row.id}");
   };
+
+  const paginatedProducts = dummyProducts.slice(
+    (page-1)*rowsPerPage,
+    page*rowsPerPage
+  )
+
+  const handlePageChange=(event,value)=>{
+    setPage(value)
+  }
 
   return (
     <>
@@ -163,7 +173,7 @@ function Products() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {dummyProducts.map((row) => (
+              {paginatedProducts.map((row) => (
                 <TableRow
                   hover
                   onClick={handleClick}
@@ -201,16 +211,18 @@ function Products() {
             </TableBody>
           </Table>
         </Box>
-        <Divider />
-        {/* <TablePagination
-          component="div"
-          count={dummyProducts.length}
-          page={page}
-          onPageChange={handlePageChange}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleRowsPerPageChange}
-          rowsPerPageOptions={[5, 10, 25]}
-        /> */}
+
+        {/* <Divider sx={{m:5}} /> */}
+        <Box m={3} display="flex" justifyContent="center">
+          <Pagination
+            count={Math.ceil(dummyProducts.length/rowsPerPage)}
+            page={page}
+            rowsperpage={rowsPerPage}
+            onChange={handlePageChange}
+            color="primary"
+            shape="rounded"
+          />
+        </Box>
       </Card>
     </>
   );

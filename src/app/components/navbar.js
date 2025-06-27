@@ -67,7 +67,7 @@ export default function Navbar() {
             <Button component={Link} href="/" sx={{ color: "#b5c0d2" }}>
               Home
             </Button>
-            <Button component={Link} href="/products" sx={{ color: "#b5c0d2" }}>
+            <Button component={Link} href="/all-products" sx={{ color: "#b5c0d2" }}>
               Products
             </Button>
             <Button

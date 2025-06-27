@@ -18,6 +18,7 @@ import {
   Typography,
   TablePagination,
   IconButton,
+  Pagination,
 } from "@mui/material";
 
 import {
@@ -28,24 +29,23 @@ import {
   Search as SearchIcon,
 } from "@mui/icons-material";
 
-import { dummyCustomers } from "../../../data/customer-data";
+import { dummyCustomers } from "../../../../data/customer-data";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
 function Customers() {
   const router = useRouter();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  // const handlePageChange = (event, newPage) => {
-  //   setPage(newPage);
-  // };
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
-  // const handleRowsPerPageChange = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
+  const paginatedCustomers = dummyCustomers.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
   return (
     <>
       {/* Layout Wrapper */}
@@ -174,59 +174,58 @@ function Customers() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {dummyCustomers
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow
-                    hover
-                    onClick={() => {
-                      router.push("/admin/customers/customer-detail/${row.id}");
-                    }}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox />
-                    </TableCell>
-                    <TableCell>
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar src={row.avatar} />
-                        <Typography variant="subtitle2">{row.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>
-                      {row.address.city}, {row.address.state},{" "}
-                      {row.address.country}
-                    </TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>
-                      {dayjs(row.createdAt).format("MMM D, YYYY")}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        sx={{ color: "red" }}
-                        onClick={(e) => {
-                          e.stopPropagation(); 
-                        }}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {paginatedCustomers.map((row) => (
+                <TableRow
+                  hover
+                  onClick={() => {
+                    router.push("/admin/customers/customer-detail/${row.id}");
+                  }}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Avatar src={row.avatar} />
+                      <Typography variant="subtitle2">{row.name}</Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>
+                    {row.address.city}, {row.address.state},{" "}
+                    {row.address.country}
+                  </TableCell>
+                  <TableCell>{row.phone}</TableCell>
+                  <TableCell>
+                    {dayjs(row.createdAt).format("MMM D, YYYY")}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      sx={{ color: "red" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Box>
-        <Divider />
-        {/* <TablePagination
-          component="div"
-          count={dummyCustomers.length}
-          page={page}
-          onPageChange={handlePageChange}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleRowsPerPageChange}
-          rowsPerPageOptions={[5, 10, 25]}
-        /> */}
+
+        <Box m={3} display="flex" justifyContent="center">
+          <Pagination
+            count={Math.ceil(dummyCustomers.length / rowsPerPage)}
+            page={page}
+            rowsperpage={rowsPerPage}
+            onChange={handlePageChange}
+            color="primary"
+            shape="rounded"
+          />
+        </Box>
       </Card>
     </>
   );

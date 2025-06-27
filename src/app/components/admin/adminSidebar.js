@@ -23,7 +23,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CategoryIcon from "@mui/icons-material/Category";
 import CollectionsIcon from "@mui/icons-material/Collections";
-import { CompareArrowsOutlined } from "@mui/icons-material";
+import { CompareArrowsOutlined, HdrOffSelect } from "@mui/icons-material";
 
 const drawerWidth = 260;
 
@@ -131,7 +131,7 @@ export default function AdminSidebar({ children }) {
             const isChildActive = children?.some((child) => pathname === child.href);
 
             return (
-              <React.Fragment key={text}>
+              <React.Fragment key={href}>
                 {/* Parent Item */}
                 <ListItem disablePadding>
                   <Link
@@ -178,7 +178,7 @@ export default function AdminSidebar({ children }) {
                 {children?.map((child) => {
                   const isChildSelected = pathname === child.href;
                   return (
-                    <ListItem key={child.text} disablePadding sx={{ pl: 4 }}>
+                    <ListItem key={child.href} disablePadding sx={{ pl: 4 }}>
                       <Link
                         href={child.href}
                         style={{

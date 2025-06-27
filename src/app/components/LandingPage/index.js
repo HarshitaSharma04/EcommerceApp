@@ -166,7 +166,7 @@ export default function LandingPage() {
           <Box textAlign="center" mt={5}>
             <Button
               component={Link}
-              href="/products"
+              href="/all-products"
               variant="text"
               sx={{
                 color: "#15b79e",

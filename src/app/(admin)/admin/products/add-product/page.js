@@ -4,11 +4,9 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
+  Divider,
   Grid,
   MenuItem,
-  Paper,
   Stack,
   TextField,
   Typography,
@@ -85,40 +83,51 @@ function AddProduct() {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" mb={4}>
+      <Typography variant="h4" mb={4} fontSize="30px" >
         Add Product
       </Typography>
 
-      <Grid container spacing={3}>
+      <Box display="flex" justifyContent="center">
         <Grid
-          size={{
-            lg: 4,
-            m: 6,
-            xs: 12,
-          }}
+          container
+          spacing={4}
+          alignItems="flex-start"
+          sx={{ maxWidth: "1200px", width: "100%" }}
         >
-          <Card>
-            <CardContent>
-        <Stack spacing={2} sx={{ alignItems: 'center' , m:"5"}}>
-           <Box
+          {/* Image Section */}
+          <Grid item sx={{ width: "30%" }}>
+            <Stack
+              spacing={2}
               sx={{
-                flex: "1",
-                borderRight: { md: "1px solid #eee" },
-                pr: { md: 4 },
-                textAlign: "center",
+                alignItems: "center",
+                border: "1px solid #e2e8f0",
+                borderRadius: "10px",
+                p: 3,
+                backgroundColor: "#fff",
               }}
             >
               <Avatar
-                variant="rounded"
-                src="https://via.placeholder.com/150"
-                sx={{ width: 120, height: 120, mx: "auto", mb: 2 }}
+                variant="circular"
+                src="/shirt.jpg"
+                sx={{ width: 120, height: 120, mb: 2 }}
               />
               <Typography fontWeight={700} fontSize="1.2rem">
                 Product Image
               </Typography>
-              <Typography color="text.secondary" mb={2}>
+              <Typography color="text.secondary" >
                 Preview or upload an image
               </Typography>
+
+              <Divider
+                sx={{
+                  width: "100%",
+                  mx: "auto",
+                  my: 3,
+                  borderColor: "#e2e8f0",
+                  borderBottomWidth: "2px",
+                }}
+              />
+
               <Button
                 variant="text"
                 sx={{
@@ -129,149 +138,154 @@ function AddProduct() {
               >
                 Upload Image
               </Button>
+            </Stack>
+          </Grid>
+
+          {/* Form Section */}
+          <Grid item xs={12} md={12} sx={{ width: "60%" }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{
+                border: "1px solid #e2e8f0",
+                borderRadius: "10px",
+                p: 3,
+                backgroundColor: "#fff",
+              }}
+            >
+              <Typography variant="h6" fontWeight={700} mb={2}>
+                Product Details
+              </Typography>
+
+              <Divider sx={{ my: 3, borderColor: "#e2e8f0" }} />
+
+              <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Product Name"
+                  name="productName"
+                  value={productData.productName}
+                  onChange={handleChange}
+                  error={!!errors.productName}
+                  helperText={errors.productName}
+                />
+                <TextField
+                  fullWidth
+                  label="Brand"
+                  name="brand"
+                  value={productData.brand}
+                  onChange={handleChange}
+                  error={!!errors.brand}
+                  helperText={errors.brand}
+                />
+              </Box>
+
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                multiline
+                rows={3}
+                value={productData.description}
+                onChange={handleChange}
+                error={!!errors.description}
+                helperText={errors.description}
+                sx={{ mb: 2 }}
+              />
+
+              <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Category"
+                  name="category"
+                  value={productData.category}
+                  onChange={handleChange}
+                  error={!!errors.category}
+                  helperText={errors.category}
+                >
+                  {categories.map((cat) => (
+                    <MenuItem key={cat} value={cat}>
+                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  fullWidth
+                  label="Stock"
+                  name="stock"
+                  value={productData.stock}
+                  onChange={handleChange}
+                  error={!!errors.stock}
+                  helperText={errors.stock}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Price"
+                  name="price"
+                  value={productData.price}
+                  onChange={handleChange}
+                  error={!!errors.price}
+                  helperText={errors.price}
+                />
+              </Box>
+
+              <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Size"
+                  name="size"
+                  value={productData.variant[0].size}
+                  onChange={handleVariantChange}
+                >
+                  {sizes.map((size) => (
+                    <MenuItem key={size} value={size}>
+                      {size}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  select
+                  fullWidth
+                  label="Color"
+                  name="color"
+                  value={productData.variant[0].color}
+                  onChange={handleVariantChange}
+                >
+                  {colors.map((color) => (
+                    <MenuItem key={color} value={color}>
+                      {color}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+
+              <Divider sx={{ my: 3, borderColor: "#e2e8f0" }} />
+
+              <Box textAlign="right">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: "#6366f1",
+                    fontWeight: "bold",
+                    px: 4,
+                    py: 1.3,
+                    borderRadius: 2,
+                    ":hover": { background: "#4f46e5" },
+                  }}
+                >
+                  Create Product
+                </Button>
+              </Box>
             </Box>
-        </Stack>
-           </CardContent>
-          </Card>
+          </Grid>
         </Grid>
-        <Grid
-          size={{
-            lg: 8,
-            md: 6,
-            xs: 12,
-          }}
-        >
-          <Box component="form" onSubmit={handleSubmit} sx={{ flex: 2 }}>
-            <Typography variant="h6" fontWeight={700} mb={1}>
-              Product Details
-            </Typography>
-            <Typography color="text.secondary" mb={3}>
-              The information can be edited
-            </Typography>
-
-            <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-              <TextField
-                fullWidth
-                label="Product Name"
-                name="productName"
-                value={productData.productName}
-                onChange={handleChange}
-                error={!!errors.productName}
-                helperText={errors.productName}
-              />
-              <TextField
-                fullWidth
-                label="Brand"
-                name="brand"
-                value={productData.brand}
-                onChange={handleChange}
-                error={!!errors.brand}
-                helperText={errors.brand}
-              />
-            </Box>
-
-            <TextField
-              fullWidth
-              label="Description"
-              name="description"
-              multiline
-              rows={3}
-              value={productData.description}
-              onChange={handleChange}
-              error={!!errors.description}
-              helperText={errors.description}
-              sx={{ mb: 2 }}
-            />
-
-            <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-              <TextField
-                select
-                fullWidth
-                label="Category"
-                name="category"
-                value={productData.category}
-                onChange={handleChange}
-                error={!!errors.category}
-                helperText={errors.category}
-              >
-                {categories.map((cat) => (
-                  <MenuItem key={cat} value={cat}>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <TextField
-                fullWidth
-                label="Stock"
-                name="stock"
-                value={productData.stock}
-                onChange={handleChange}
-                error={!!errors.stock}
-                helperText={errors.stock}
-              />
-              <TextField
-                fullWidth
-                label="Price"
-                name="price"
-                value={productData.price}
-                onChange={handleChange}
-                error={!!errors.price}
-                helperText={errors.price}
-              />
-            </Box>
-
-            <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
-              <TextField
-                select
-                fullWidth
-                label="Size"
-                name="size"
-                value={productData.variant[0].size}
-                onChange={handleVariantChange}
-              >
-                {sizes.map((size) => (
-                  <MenuItem key={size} value={size}>
-                    {size}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <TextField
-                select
-                fullWidth
-                label="Color"
-                name="color"
-                value={productData.variant[0].color}
-                onChange={handleVariantChange}
-              >
-                {colors.map((color) => (
-                  <MenuItem key={color} value={color}>
-                    {color}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
-
-            <Box textAlign="right">
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  background: "#6366f1",
-                  fontWeight: "bold",
-                  px: 4,
-                  py: 1.3,
-                  borderRadius: 2,
-                  ":hover": { background: "#4f46e5" },
-                }}
-              >
-                Create Product
-              </Button>
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 }
